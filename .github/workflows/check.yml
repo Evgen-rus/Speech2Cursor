@@ -17,11 +17,11 @@ jobs:
     - name: Download code
       uses: actions/checkout@v4
 
-    # Шаг 2: Установить Python 3.11
-    - name: Setup Python 3.11
+    # Шаг 2: Установить Python 3.13
+    - name: Setup Python 3.13
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
 
     # Шаг 3: Установить зависимости
     - name: Install dependencies
@@ -42,19 +42,19 @@ jobs:
         python -c "import keyboard; print('Keyboard OK')"
         python -c "import pyperclip; print('Pyperclip OK')"
         python -c "import openai; print('OpenAI OK')"
-        python -c "print('✅ All imports work!')"
+        python -c "print('All imports work!')"
 
     # Шаг 6: Проверить создание объектов
     - name: Test basic functionality
       run: |
-        python -c "from mic_transcribe_hotkey import VoiceRecorder; r = VoiceRecorder(); print(f'✅ VoiceRecorder created: sample_rate={r.sample_rate}, channels={r.channels}')"
-        python -c "from config import logger; print('✅ Logger imported successfully')"
-        python -c "print('✅ Basic functionality works!')"
+        python -c "from mic_transcribe_hotkey import VoiceRecorder; r = VoiceRecorder(); print(f'VoiceRecorder created: sample_rate={r.sample_rate}, channels={r.channels}')"
+        python -c "from config import logger; print('Logger imported successfully')"
+        python -c "print('Basic functionality works!')"
 
     # Шаг 7: Проверить структуру файлов
     - name: Check project structure
       run: |
-        if exist requirements.txt (echo ✅ requirements.txt exists) else (echo ❌ requirements.txt missing)
-        if exist README_rus.md (echo ✅ README_rus.md exists) else (echo ❌ README_rus.md missing)
-        if exist .env.example (echo ✅ .env.example exists) else (echo ❌ .env.example missing)
-        echo ✅ Project structure OK
+        if exist requirements.txt (echo [OK] requirements.txt exists) else (echo [ERROR] requirements.txt missing)
+        if exist README_rus.md (echo [OK] README_rus.md exists) else (echo [ERROR] README_rus.md missing)
+        if exist .env.example (echo [OK] .env.example exists) else (echo [ERROR] .env.example missing)
+        echo [OK] Project structure OK

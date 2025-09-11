@@ -14,13 +14,13 @@ Project for recording voice from microphone and transcribing it to text using Op
 
 ## System Requirements
 
-- **Python 3.11** or higher
+- **Python 3.13** or higher
 - Active internet connection
 - Microphone for voice recording
 
 ## Installation
 
-1. Make sure you have Python 3.11 or higher installed. Check version with:
+1. Make sure you have Python 3.13 or higher installed. Check version with:
    ```bash
    python --version
    ```
