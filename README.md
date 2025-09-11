@@ -12,29 +12,40 @@ Project for recording voice from microphone and transcribing it to text using Op
 - `.env` - environment variables (API keys, settings)
 - `.env.example` - example environment variables file
 
+## System Requirements
+
+- **Python 3.11** or higher
+- Active internet connection
+- Microphone for voice recording
+
 ## Installation
 
-1. Clone the repository:
+1. Make sure you have Python 3.11 or higher installed. Check version with:
+   ```bash
+   python --version
+   ```
+
+2. Clone the repository:
    ```bash
    git clone https://github.com/Evgen-rus/Speech2Cursor.git
    cd Speech2Cursor
    ```
 
-2. Create virtual environment:
+3. Create virtual environment:
    ```bash
    python -m venv venv
    ```
 
-3. Activate environment:
+4. Activate environment:
    - Windows: `venv\Scripts\activate`
    - Linux/Mac: `source venv/bin/activate`
 
-4. Install dependencies:
+5. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Configure `.env` file:
+6. Configure `.env` file:
    ```bash
    cp .env.example .env
    ```
@@ -55,9 +66,49 @@ Recording Control:
 - Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
 
 ### Option 2: Hotkey Mode
+
+#### Method 2.1: Command Line Launch
 Run the script with hotkey control:
 ```bash
 python mic_transcribe_hotkey.py
+```
+
+#### Method 2.2: Launch via .bat file (Windows)
+For convenient Windows launch, you can use a .bat file:
+
+1. Create a file `run_speech2cursor.bat` in the project root with the following content:
+   ```batch
+   @echo off
+   echo Activating virtual environment...
+   call venv\Scripts\activate.bat
+
+   if %errorlevel% neq 0 (
+       echo Virtual environment activation error!
+       pause
+       exit /b 1
+   )
+
+   echo Launching Speech2Cursor...
+   python mic_transcribe_hotkey.py
+
+   echo.
+   echo Program completed.
+   pause
+   ```
+
+2. Double-click the `run_speech2cursor.bat` file to launch
+
+#### Method 2.3: Desktop Shortcut
+Create a shortcut with the following target location:
+```
+[PROJECT_PATH]\venv\Scripts\python.exe [PROJECT_PATH]\mic_transcribe_hotkey.py
+```
+
+Where `[PROJECT_PATH]` is the full path to your Speech2Cursor project folder.
+
+**Example for your path:**
+```
+C:\My_Scripts_PYTON\Speech2Cursor\venv\Scripts\python.exe C:\My_Scripts_PYTON\Speech2Cursor\mic_transcribe_hotkey.py
 ```
 
 Hotkey Control:

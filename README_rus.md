@@ -12,29 +12,40 @@
 - `.env` - переменные окружения (API ключи, настройки)
 - `.env.example` - пример файла переменных окружения
 
+## Системные требования
+
+- **Python 3.11** или выше
+- Активное подключение к интернету
+- Микрофон для записи голоса
+
 ## Установка
 
-1. Клонируйте репозиторий:
+1. Убедитесь, что у вас установлен Python 3.11 или выше. Проверить версию можно командой:
+   ```bash
+   python --version
+   ```
+
+2. Клонируйте репозиторий:
    ```bash
    git clone https://github.com/Evgen-rus/Speech2Cursor.git
    cd Speech2Cursor
    ```
 
-2. Создайте виртуальное окружение:
+3. Создайте виртуальное окружение:
    ```bash
    python -m venv venv
    ```
 
-3. Активируйте окружение:
+4. Активируйте окружение:
    - Windows: `venv\Scripts\activate`
    - Linux/Mac: `source venv/bin/activate`
 
-4. Установите зависимости:
+5. Установите зависимости:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Настройте `.env` файл:
+6. Настройте `.env` файл:
    ```bash
    cp .env.example .env
    ```
@@ -55,9 +66,49 @@ python mic_transcribe.py
 - Текст автоматически копируется в буфер обмена и готов к вставке в чат с Ctrl+V
 
 ### Вариант 2: Режим горячих клавиш
+
+#### Способ 2.1: Запуск через командную строку
 Запустите скрипт с управлением горячими клавишами:
 ```bash
 python mic_transcribe_hotkey.py
+```
+
+#### Способ 2.2: Запуск через .bat файл (Windows)
+Для удобного запуска на Windows можно использовать .bat файл:
+
+1. Создайте файл `run_speech2cursor.bat` в корне проекта со следующим содержимым:
+   ```batch
+   @echo off
+   echo Активация виртуального окружения...
+   call venv\Scripts\activate.bat
+
+   if %errorlevel% neq 0 (
+       echo Ошибка активации виртуального окружения!
+       pause
+       exit /b 1
+   )
+
+   echo Запуск Speech2Cursor...
+   python mic_transcribe_hotkey.py
+
+   echo.
+   echo Программа завершена.
+   pause
+   ```
+
+2. Дважды кликните по файлу `run_speech2cursor.bat` для запуска
+
+#### Способ 2.3: Ярлык на рабочий стол
+Создайте ярлык со следующим расположением объекта:
+```
+[ПУТЬ_К_ПРОЕКТУ]\venv\Scripts\python.exe [ПУТЬ_К_ПРОЕКТУ]\mic_transcribe_hotkey.py
+```
+
+Где `[ПУТЬ_К_ПРОЕКТУ]` - полный путь к папке вашего проекта Speech2Cursor.
+
+**Пример для вашего пути:**
+```
+C:\My_Scripts_PYTON\Speech2Cursor\venv\Scripts\python.exe C:\My_Scripts_PYTON\Speech2Cursor\mic_transcribe_hotkey.py
 ```
 
 Управление горячими клавишами:
