@@ -52,10 +52,6 @@ python mic_transcribe.py
 - Press Enter to stop recording
 - Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
 
-### Repeat:
-- Enter - repeat recording
-- n - exit
-
 ## Limitations
 
 The project was originally created for convenient work in Cursor — short voice messages for fast transcription.
