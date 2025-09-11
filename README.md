@@ -9,6 +9,7 @@
 - `mic_transcribe.py` - основной скрипт для записи с микрофона и транскрибации
 - `requirements.txt` - зависимости проекта
 - `.env` - переменные окружения (API ключи, настройки)
+- `.env.example` - пример файла переменных окружения
 
 ## Установка
 
@@ -32,10 +33,11 @@
    pip install -r requirements.txt
    ```
 
-5. Настройте `.env` файл с вашим OpenAI API ключом:
+5. Настройте `.env` файл:
+   ```bash
+   cp .env.example .env
    ```
-   OPENAI_API_KEY=sk-your-key-here
-   ```
+   Откройте `.env` и замените `OPENAI_API_KEY=Ваш API ключ OpenAI` на ваш реальный API ключ OpenAI.
 
 ## Использование
 
