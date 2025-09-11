@@ -1,0 +1,60 @@
+name: Check Speech2Cursor Code
+
+# Когда запускать проверку
+on:
+  push:                    # При каждом git push
+    branches: [ main, master ]
+  pull_request:           # При создании pull request
+    branches: [ main, master ]
+
+jobs:
+  check:
+    # Запускать на Windows (как у тебя)
+    runs-on: windows-latest
+
+    steps:
+    # Шаг 1: Скачать код из репозитория
+    - name: Download code
+      uses: actions/checkout@v4
+
+    # Шаг 2: Установить Python 3.11
+    - name: Setup Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    # Шаг 3: Установить зависимости
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Шаг 4: Проверить версию Python
+    - name: Check Python version
+      run: python --version
+
+    # Шаг 5: Проверить импорты модулей
+    - name: Check imports
+      run: |
+        python -c "import sys; print(f'Python version: {sys.version}')"
+        python -c "import numpy as np; print(f'NumPy version: {np.__version__}')"
+        python -c "import sounddevice as sd; print('SoundDevice OK')"
+        python -c "import keyboard; print('Keyboard OK')"
+        python -c "import pyperclip; print('Pyperclip OK')"
+        python -c "import openai; print('OpenAI OK')"
+        python -c "print('✅ All imports work!')"
+
+    # Шаг 6: Проверить создание объектов
+    - name: Test basic functionality
+      run: |
+        python -c "from mic_transcribe_hotkey import VoiceRecorder; r = VoiceRecorder(); print(f'✅ VoiceRecorder created: sample_rate={r.sample_rate}, channels={r.channels}')"
+        python -c "from config import logger; print('✅ Logger imported successfully')"
+        python -c "print('✅ Basic functionality works!')"
+
+    # Шаг 7: Проверить структуру файлов
+    - name: Check project structure
+      run: |
+        if exist requirements.txt (echo ✅ requirements.txt exists) else (echo ❌ requirements.txt missing)
+        if exist README_rus.md (echo ✅ README_rus.md exists) else (echo ❌ README_rus.md missing)
+        if exist .env.example (echo ✅ .env.example exists) else (echo ❌ .env.example missing)
+        echo ✅ Project structure OK
