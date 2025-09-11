@@ -5,6 +5,7 @@ from typing import List
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
+import pyperclip
 
 from audio_handler import transcribe_voice
 from config import logger
@@ -50,6 +51,11 @@ async def main() -> None:
             print("--------------------------------")
             print(text)
             print("--------------------------------\n")
+            try:
+                pyperclip.copy(text)
+                print("[Скопировано в буфер обмена]")
+            except Exception as clip_err:
+                logger.warning(f"Не удалось скопировать в буфер обмена: {clip_err}")
         except Exception as e:
             logger.error(f"Ошибка транскрибации: {e}")
 
