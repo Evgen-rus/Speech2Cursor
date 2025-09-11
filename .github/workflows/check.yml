@@ -54,7 +54,7 @@ jobs:
     # Шаг 7: Проверить структуру файлов
     - name: Check project structure
       run: |
-        if exist requirements.txt (echo [OK] requirements.txt exists) else (echo [ERROR] requirements.txt missing)
-        if exist README_rus.md (echo [OK] README_rus.md exists) else (echo [ERROR] README_rus.md missing)
-        if exist .env.example (echo [OK] .env.example exists) else (echo [ERROR] .env.example missing)
-        echo [OK] Project structure OK
+        if (Test-Path requirements.txt) { Write-Host "[OK] requirements.txt exists" } else { Write-Host "[ERROR] requirements.txt missing" }
+        if (Test-Path README_rus.md) { Write-Host "[OK] README_rus.md exists" } else { Write-Host "[ERROR] README_rus.md missing" }
+        if (Test-Path .env.example) { Write-Host "[OK] .env.example exists" } else { Write-Host "[ERROR] .env.example missing" }
+        Write-Host "[OK] Project structure OK"
