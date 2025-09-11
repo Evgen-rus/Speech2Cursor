@@ -7,6 +7,7 @@ Project for recording voice from microphone and transcribing it to text using Op
 - `audio_handler.py` - module for asynchronous voice message transcription
 - `config.py` - project configuration (logging, environment variables)
 - `mic_transcribe.py` - main script for recording from microphone and transcription
+- `mic_transcribe_hotkey.py` - script with hotkey control (press Alt+S to record)
 - `requirements.txt` - project dependencies
 - `.env` - environment variables (API keys, settings)
 - `.env.example` - example environment variables file
@@ -41,16 +42,29 @@ Project for recording voice from microphone and transcribing it to text using Op
 
 ## Usage
 
+### Option 1: Standard Mode
 Run the script:
 ```bash
 python mic_transcribe.py
 ```
 
-### Recording Control:
+Recording Control:
 - Press Enter to start recording
 - Speak into the microphone
 - Press Enter to stop recording
 - Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
+
+### Option 2: Hotkey Mode
+Run the script with hotkey control:
+```bash
+python mic_transcribe_hotkey.py
+```
+
+Hotkey Control:
+- Press Alt+S to start recording
+- Press Alt+S again to stop recording and start transcription
+- Text is automatically copied to clipboard
+- Press Ctrl+C to exit
 
 ## Limitations
 
@@ -68,4 +82,5 @@ The project was originally created for convenient work in Cursor — short voice
 - `soundfile` - audio file handling
 - `numpy` - audio data processing
 - `pyperclip` - clipboard copying
+- `keyboard` - hotkey detection
 - `python-dotenv` - environment variable loading
