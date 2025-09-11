@@ -1,75 +1,75 @@
 # Speech2Cursor
 
-Проект для записи голоса с микрофона и его транскрибации в текст через OpenAI API.
+Project for recording voice from microphone and transcribing it to text using OpenAI API.
 
-## Структура проекта
+## Project Structure
 
-- `audio_handler.py` - модуль для асинхронной транскрибации голосовых сообщений
-- `config.py` - конфигурация проекта (логирование, переменные окружения)
-- `mic_transcribe.py` - основной скрипт для записи с микрофона и транскрибации
-- `requirements.txt` - зависимости проекта
-- `.env` - переменные окружения (API ключи, настройки)
-- `.env.example` - пример файла переменных окружения
+- `audio_handler.py` - module for asynchronous voice message transcription
+- `config.py` - project configuration (logging, environment variables)
+- `mic_transcribe.py` - main script for recording from microphone and transcription
+- `requirements.txt` - project dependencies
+- `.env` - environment variables (API keys, settings)
+- `.env.example` - example environment variables file
 
-## Установка
+## Installation
 
-1. Клонируйте репозиторий:
+1. Clone the repository:
    ```bash
    git clone https://github.com/Evgen-rus/Speech2Cursor.git
    cd Speech2Cursor
    ```
 
-2. Создайте виртуальное окружение:
+2. Create virtual environment:
    ```bash
    python -m venv venv
    ```
 
-3. Активируйте окружение:
+3. Activate environment:
    - Windows: `venv\Scripts\activate`
    - Linux/Mac: `source venv/bin/activate`
 
-4. Установите зависимости:
+4. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Настройте `.env` файл:
+5. Configure `.env` file:
    ```bash
    cp .env.example .env
    ```
-   Откройте `.env` и замените `OPENAI_API_KEY=Ваш API ключ OpenAI` на ваш реальный API ключ OpenAI.
+   Open `.env` and replace `OPENAI_API_KEY=Ваш API ключ OpenAI` with your real OpenAI API key.
 
-## Использование
+## Usage
 
-Запустите скрипт:
+Run the script:
 ```bash
 python mic_transcribe.py
 ```
 
-### Управление записью:
-- Нажмите Enter для начала записи
-- Говорите в микрофон
-- Нажмите Enter для остановки записи
-- Текст автоматически копируется в буфер обмена и готов к вставке в чат с Ctrl+V
+### Recording Control:
+- Press Enter to start recording
+- Speak into the microphone
+- Press Enter to stop recording
+- Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
 
-### Повторение:
-- Enter - повторить запись
-- n - выход
+### Repeat:
+- Enter - repeat recording
+- n - exit
 
-## Ограничения
+## Limitations
 
-Проект изначально создан для удобной работы в курсоре — короткие голосовые сообщения для быстрой транскрибации.
+The project was originally created for convenient work in Cursor — short voice messages for fast transcription.
 
-- Максимальная длина записи: ~12-13 минут (ограничение API ~25 МБ)
-- Рекомендуемая длина: 1-5 минут для оптимальной скорости
-- Требуется активное подключение к интернету для транскрибации
-- Формат записи: WAV (16 kHz, 16-bit, моно)
+- Maximum recording length: ~12-13 minutes (API limit ~25 MB)
+- Recommended length: 1-5 minutes for optimal speed
+- Requires active internet connection for transcription
+- Recording format: WAV (16 kHz, 16-bit, mono)
 
-## Зависимости
+## Dependencies
 
-- `openai` - API для транскрибации
-- `sounddevice` - запись с микрофона
-- `soundfile` - работа с аудио-файлами
-- `numpy` - обработка аудио-данных
-- `pyperclip` - копирование в буфер обмена
-- `python-dotenv` - загрузка переменных окружения
+- `openai` - API for transcription
+- `sounddevice` - microphone recording
+- `soundfile` - audio file handling
+- `numpy` - audio data processing
+- `pyperclip` - clipboard copying
+- `python-dotenv` - environment variable loading
