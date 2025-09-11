@@ -117,6 +117,46 @@ Hotkey Control:
 - Text is automatically copied to clipboard
 - Press Ctrl+C to exit
 
+## Troubleshooting
+
+### Problem: "Microphone not found" or "No sound"
+**Solution:**
+1. Check that the microphone is connected and enabled
+2. In Windows: Settings → Sound → Input
+3. Make sure the microphone is selected as the default device
+4. Restart your computer
+
+### Problem: "Virtual environment activation error"
+**Solution:**
+1. Make sure virtual environment is created: `python -m venv venv`
+2. In Windows use: `venv\Scripts\activate`
+3. Check that Python is installed correctly
+
+### Problem: "OpenAI API error" or "Invalid API key"
+**Solution:**
+1. Check API key in `.env` file
+2. Make sure the key is active on OpenAI website
+3. Check your OpenAI account balance
+4. Ensure internet connection is available
+
+### Problem: "Module not found" when running
+**Solution:**
+1. Activate virtual environment
+2. Install dependencies: `pip install -r requirements.txt`
+3. If problem persists: `pip install --upgrade -r requirements.txt`
+
+### Problem: Hotkeys don't work
+**Solution:**
+1. Run the program as administrator
+2. Check that other programs aren't intercepting Alt+S
+3. Try different key combinations in the code
+
+### Problem: Text not copied to clipboard
+**Solution:**
+1. Check that `pyperclip` is installed
+2. Try running as administrator
+3. On Linux/Mac may require additional setup
+
 ## Limitations
 
 The project was originally created for convenient work in Cursor — short voice messages for fast transcription.
@@ -135,3 +175,32 @@ The project was originally created for convenient work in Cursor — short voice
 - `pyperclip` - clipboard copying
 - `keyboard` - hotkey detection
 - `python-dotenv` - environment variable loading
+
+## Updating the Project
+
+### Updating Dependencies
+```bash
+# Activate virtual environment
+venv\Scripts\activate
+
+# Upgrade pip
+pip install --upgrade pip
+
+# Upgrade all dependencies
+pip install --upgrade -r requirements.txt
+```
+
+### Getting Latest Changes (if project is on GitHub)
+```bash
+git pull origin main
+```
+
+### Upgrading Python
+If you want to use a newer Python version:
+1. Download new Python from the official website
+2. Create a new virtual environment
+3. Reinstall dependencies
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

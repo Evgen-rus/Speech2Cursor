@@ -1,49 +1,45 @@
-# Виртуальное окружение
-venv/
-env/
-ENV/
-
-# Файлы с конфиденциальными данными
-.env
-
-# Кеш Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Данные пользователей
-data/
+# Virtual environments
+venv/
+env/
+ENV/
 
-# Логи
-*.log
+# Environment variables
+.env
+.env.local
 
-# Редакторы и IDE
-.idea/
+# IDE
 .vscode/
+.idea/
 *.swp
 *.swo
-.cursor/
 
-# Папки с кешем Jupyter
-.ipynb_checkpoints/
-
-# Локальные настройки
+# OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Audio files (if any test recordings)
+*.wav
+*.mp3
+*.flac
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
