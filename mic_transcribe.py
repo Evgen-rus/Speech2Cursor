@@ -39,13 +39,14 @@ def record_audio(sample_rate: int = 16000, channels: int = 1) -> bytes:
 
 
 async def main() -> None:
+    print("Запуск Speech2Cursor. Для выхода нажмите Ctrl+C")
     while True:
-        wav_bytes = record_audio(sample_rate=16000, channels=1)
-        if not wav_bytes:
-            print("Ничего не записано. Повторим.")
-            continue
-
         try:
+            wav_bytes = record_audio(sample_rate=16000, channels=1)
+            if not wav_bytes:
+                print("Ничего не записано. Повторим.")
+                continue
+
             text = await transcribe_voice(wav_bytes, file_name="voice.wav", language="ru")
             print("\nРаспознанный текст:")
             print("--------------------------------")
@@ -56,12 +57,13 @@ async def main() -> None:
                 print("[Скопировано в буфер обмена]")
             except Exception as clip_err:
                 logger.warning(f"Не удалось скопировать в буфер обмена: {clip_err}")
+
+        except KeyboardInterrupt:
+            print("\nВыход из программы...")
+            break
         except Exception as e:
             logger.error(f"Ошибка транскрибации: {e}")
-
-        choice = input("Ещё раз? [Enter - да / n - выход]: ").strip().lower()
-        if choice == "n":
-            break
+            print("Произошла ошибка, но продолжаем работу...")
 
 
 if __name__ == "__main__":
