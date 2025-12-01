@@ -6,6 +6,7 @@ Project for recording voice from microphone and transcribing it to text using Op
 
 - `audio_handler.py` - module for asynchronous voice message transcription
 - `config.py` - project configuration (logging, environment variables)
+- `file_transcribe.py` - script for transcribing existing audio files (file selection dialog)
 - `mic_transcribe.py` - main script for recording from microphone and transcription
 - `mic_transcribe_hotkey.py` - script with hotkey control (press Alt+S to record)
 - `requirements.txt` - project dependencies
@@ -17,6 +18,7 @@ Project for recording voice from microphone and transcribing it to text using Op
 - **Python 3.13** or higher
 - Active internet connection
 - Microphone for voice recording
+- **ffmpeg** for audio file processing (required for file transcription mode)
 
 ## Installation
 
@@ -45,15 +47,34 @@ Project for recording voice from microphone and transcribing it to text using Op
    pip install -r requirements.txt
    ```
 
-6. Configure `.env` file:
+6. Install ffmpeg (required for audio file processing):
+   - Download from official website: https://ffmpeg.org/download.html
+   - Choose Windows version
+   - Extract archive (e.g., to `C:\ffmpeg`)
+   - Add `C:\ffmpeg\bin` to your PATH environment variable
+
+7. Configure `.env` file:
    ```bash
    cp .env.example .env
    ```
-   Open `.env` and replace `OPENAI_API_KEY=Ваш API ключ OpenAI` with your real OpenAI API key.
+   Open `.env` and replace `OPENAI_API_KEY=Your OpenAI API key` with your real OpenAI API key.
 
 ## Usage
 
-### Option 1: Standard Mode
+### Option 1: File Transcription Mode
+Run the script for transcribing existing audio files:
+```bash
+python file_transcribe.py
+```
+
+File Selection Control:
+- File dialog opens automatically
+- Select any audio file (.wav, .mp3, .ogg, etc.)
+- Wait for transcription to complete
+- Result is saved to .txt file next to the original audio file
+- File name format: `original_name_transcription_YYYY-MM-DD_HH-MM-SS.txt`
+
+### Option 2: Standard Mode
 Run the script:
 ```bash
 python mic_transcribe.py
@@ -65,15 +86,15 @@ Recording Control:
 - Press Enter to stop recording
 - Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
 
-### Option 2: Hotkey Mode
+### Option 3: Hotkey Mode
 
-#### Method 2.1: Command Line Launch
+#### Method 3.1: Command Line Launch
 Run the script with hotkey control:
 ```bash
 python mic_transcribe_hotkey.py
 ```
 
-#### Method 2.2: Launch via .bat file (Windows)
+#### Method 3.2: Launch via .bat file (Windows)
 For convenient Windows launch, you can use a .bat file:
 
 1. Create a file `run_speech2cursor.bat` in the project root with the following content:
@@ -98,7 +119,7 @@ For convenient Windows launch, you can use a .bat file:
 
 2. Double-click the `run_speech2cursor.bat` file to launch
 
-#### Method 2.3: Desktop Shortcut
+#### Method 3.3: Desktop Shortcut
 Create a shortcut with the following target location:
 ```
 [PROJECT_PATH]\venv\Scripts\python.exe [PROJECT_PATH]\mic_transcribe_hotkey.py
@@ -157,14 +178,30 @@ Hotkey Control:
 2. Try running as administrator
 3. On Linux/Mac may require additional setup
 
+### Problem: "ffmpeg not found" or audio conversion error
+**Solution:**
+1. Make sure ffmpeg is installed and added to PATH
+2. Test installation with: `ffmpeg -version`
+3. Restart command prompt after adding ffmpeg to PATH
+4. Download latest ffmpeg from official website
+
 ## Limitations
 
 The project was originally created for convenient work in Cursor — short voice messages for fast transcription.
 
+### Microphone Recording Mode
 - Maximum recording length: ~12-13 minutes (API limit ~25 MB)
 - Recommended length: 1-5 minutes for optimal speed
-- Requires active internet connection for transcription
 - Recording format: WAV (16 kHz, 16-bit, mono)
+
+### File Transcription Mode
+- Automatic chunking of long files: files longer than 15 minutes are automatically split into safe segments
+- Maximum segment length: 15 minutes (safe limit for OpenAI API)
+- Supported formats: wav, mp3, m4a, ogg, flac, webm (via ffmpeg)
+- Result: all segments are combined into one .txt file with segment headers
+
+### General Requirements
+- Requires active internet connection for transcription
 
 ## Dependencies
 
@@ -203,4 +240,4 @@ If you want to use a newer Python version:
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. 
