@@ -1,243 +1,257 @@
 # Speech2Cursor
 
-Project for recording voice from microphone and transcribing it to text using OpenAI API.
+Проект для записи голоса с микрофона и его транскрибации в текст через OpenAI API.
 
-## Project Structure
+## Структура проекта
 
-- `audio_handler.py` - module for asynchronous voice message transcription
-- `config.py` - project configuration (logging, environment variables)
-- `file_transcribe.py` - script for transcribing existing audio files (file selection dialog)
-- `mic_transcribe.py` - main script for recording from microphone and transcription
-- `mic_transcribe_hotkey.py` - script with hotkey control (press Alt+S to record)
-- `requirements.txt` - project dependencies
-- `.env` - environment variables (API keys, settings)
-- `.env.example` - example environment variables file
+- `audio_handler.py` - модуль для асинхронной транскрибации голосовых сообщений
+- `config.py` - конфигурация проекта (логирование, переменные окружения)
+- `file_transcribe.py` - скрипт для транскрибации одного существующего аудио-файла (диалог выбора файла)
+- `file_transcribe_batch.py` - скрипт для массовой транскрибации нескольких аудио-файлов
+- `mic_transcribe.py` - основной скрипт для записи с микрофона и транскрибации
+- `mic_transcribe_hotkey.py` - скрипт с управлением горячими клавишами (нажмите Alt+S для записи)
+- `requirements.txt` - зависимости проекта
+- `.env` - переменные окружения (API ключи, настройки)
+- `.env.example` - пример файла переменных окружения
 
-## System Requirements
+## Системные требования
 
-- **Python 3.13** or higher
-- Active internet connection
-- Microphone for voice recording
-- **ffmpeg** for audio file processing (required for file transcription mode)
+- **Python 3.13** или выше
+- Активное подключение к интернету
+- Микрофон для записи голоса
+- **ffmpeg** для обработки аудио-файлов (для режима транскрибации файлов)
 
-## Installation
+## Установка
 
-1. Make sure you have Python 3.13 or higher installed. Check version with:
+1. Убедитесь, что у вас установлен Python 3.13 или выше. Проверить версию можно командой:
    ```bash
    python --version
    ```
 
-2. Clone the repository:
+2. Клонируйте репозиторий:
    ```bash
    git clone https://github.com/Evgen-rus/Speech2Cursor.git
    cd Speech2Cursor
    ```
 
-3. Create virtual environment:
+3. Создайте виртуальное окружение:
    ```bash
    python -m venv venv
    ```
 
-4. Activate environment:
+4. Активируйте окружение:
    - Windows: `venv\Scripts\activate`
    - Linux/Mac: `source venv/bin/activate`
 
-5. Install dependencies:
+5. Установите зависимости:
    ```bash
    pip install -r requirements.txt
    ```
 
-6. Install ffmpeg (required for audio file processing):
-   - Download from official website: https://ffmpeg.org/download.html
-   - Choose Windows version
-   - Extract archive (e.g., to `C:\ffmpeg`)
-   - Add `C:\ffmpeg\bin` to your PATH environment variable
+6. Установите ffmpeg (требуется для обработки аудио-файлов):
+   - Скачайте с официального сайта: https://ffmpeg.org/download.html
+   - Выберите версию для Windows
+   - Распакуйте архив (например, в `C:\ffmpeg`)
+   - Добавьте путь `C:\ffmpeg\bin` в переменную окружения PATH
 
-7. Configure `.env` file:
+7. Настройте `.env` файл:
    ```bash
    cp .env.example .env
    ```
-   Open `.env` and replace `OPENAI_API_KEY=Your OpenAI API key` with your real OpenAI API key.
+   Откройте `.env` и замените `OPENAI_API_KEY=Ваш API ключ OpenAI` на ваш реальный API ключ OpenAI.
 
-## Usage
+## Использование
 
-### Option 1: File Transcription Mode
-Run the script for transcribing existing audio files:
+### Вариант 1: Режим транскрибации одного файла
+Запустите скрипт для транскрибации одного существующего аудио-файла:
 ```bash
 python file_transcribe.py
 ```
 
-File Selection Control:
-- File dialog opens automatically
-- Select any audio file (.wav, .mp3, .ogg, etc.)
-- Wait for transcription to complete
-- Result is saved to .txt file next to the original audio file
-- File name format: `original_name_transcription_YYYY-MM-DD_HH-MM-SS.txt`
+Управление выбором файла:
+- Диалог выбора файла открывается автоматически
+- Выберите любой аудио-файл (.wav, .mp3, .ogg и т.д.)
+- Дождитесь завершения транскрибации
+- Результат сохраняется в .txt файл рядом с исходным аудио-файлом
+- Формат имени файла: `имя_оригинала_transcription_ГГГГ-ММ-ДД_ЧЧ-ММ-СС.txt`
 
-### Option 2: Standard Mode
-Run the script:
+### Вариант 1.1: Режим массовой транскрибации файлов
+Запустите скрипт для транскрибации нескольких аудио-файлов:
+```bash
+python file_transcribe_batch.py
+```
+
+Управление выбором файлов:
+- Диалог выбора файлов открывается автоматически
+- Выберите один или несколько аудио-файлов (.wav, .mp3, .ogg и т.д.) — можно выбрать несколько через Ctrl/Shift
+- Файлы обрабатываются по очереди
+- Каждый результат сохраняется в отдельный .txt файл рядом с исходным аудио-файлом
+- Дополнительно создаётся общий файл со всеми транскрипциями в формате: `batch_transcription_ГГГГ-ММ-ДД_ЧЧ-ММ-СС.txt`
+
+### Вариант 2: Стандартный режим записи с микрофона
+Запустите скрипт:
 ```bash
 python mic_transcribe.py
 ```
 
-Recording Control:
-- Press Enter to start recording
-- Speak into the microphone
-- Press Enter to stop recording
-- Text is automatically copied to clipboard and ready to paste in chat with Ctrl+V
+Управление записью:
+- Нажмите Enter для начала записи
+- Говорите в микрофон
+- Нажмите Enter для остановки записи
+- Текст автоматически копируется в буфер обмена и готов к вставке в чат с Ctrl+V
 
-### Option 3: Hotkey Mode
+### Вариант 3: Режим горячих клавиш
 
-#### Method 3.1: Command Line Launch
-Run the script with hotkey control:
+#### Способ 3.1: Запуск через командную строку
+Запустите скрипт с управлением горячими клавишами:
 ```bash
 python mic_transcribe_hotkey.py
 ```
 
-#### Method 3.2: Launch via .bat file (Windows)
-For convenient Windows launch, you can use a .bat file:
+#### Способ 3.2: Запуск через .bat файл (Windows)
+Для удобного запуска на Windows можно использовать .bat файл:
 
-1. Create a file `run_speech2cursor.bat` in the project root with the following content:
+1. Создайте файл `run_speech2cursor.bat` в корне проекта со следующим содержимым:
    ```batch
    @echo off
-   echo Activating virtual environment...
+   echo Активация виртуального окружения...
    call venv\Scripts\activate.bat
 
    if %errorlevel% neq 0 (
-       echo Virtual environment activation error!
+       echo Ошибка активации виртуального окружения!
        pause
        exit /b 1
    )
 
-   echo Launching Speech2Cursor...
+   echo Запуск Speech2Cursor...
    python mic_transcribe_hotkey.py
 
    echo.
-   echo Program completed.
+   echo Программа завершена.
    pause
    ```
 
-2. Double-click the `run_speech2cursor.bat` file to launch
+2. Дважды кликните по файлу `run_speech2cursor.bat` для запуска
 
-#### Method 3.3: Desktop Shortcut
-Create a shortcut with the following target location:
+#### Способ 3.3: Ярлык на рабочий стол
+Создайте ярлык со следующим расположением объекта:
 ```
-[PROJECT_PATH]\venv\Scripts\python.exe [PROJECT_PATH]\mic_transcribe_hotkey.py
+[ПУТЬ_К_ПРОЕКТУ]\venv\Scripts\python.exe [ПУТЬ_К_ПРОЕКТУ]\mic_transcribe_hotkey.py
 ```
 
-Where `[PROJECT_PATH]` is the full path to your Speech2Cursor project folder.
+Где `[ПУТЬ_К_ПРОЕКТУ]` - полный путь к папке вашего проекта Speech2Cursor.
 
-**Example for your path:**
+**Пример для вашего пути:**
 ```
 C:\My_Scripts_PYTON\Speech2Cursor\venv\Scripts\python.exe C:\My_Scripts_PYTON\Speech2Cursor\mic_transcribe_hotkey.py
 ```
 
-Hotkey Control:
-- Press Alt+S to start recording
-- Press Alt+S again to stop recording and start transcription
-- Text is automatically copied to clipboard
-- Press Ctrl+C to exit
+Управление горячими клавишами:
+- Нажмите Alt+S для начала записи
+- Нажмите Alt+S еще раз для остановки записи и начала транскрибации
+- Текст автоматически копируется в буфер обмена
+- Нажмите Ctrl+C для выхода
 
-## Troubleshooting
+## Устранение неисправностей (Troubleshooting)
 
-### Problem: "Microphone not found" or "No sound"
-**Solution:**
-1. Check that the microphone is connected and enabled
-2. In Windows: Settings → Sound → Input
-3. Make sure the microphone is selected as the default device
-4. Restart your computer
+### Проблема: "Микрофон не найден" или "Нет звука"
+**Решение:**
+1. Проверьте, что микрофон подключен и включен
+2. В Windows: Параметры → Звук → Ввод
+3. Убедитесь, что микрофон выбран как устройство по умолчанию
+4. Перезагрузите компьютер
 
-### Problem: "Virtual environment activation error"
-**Solution:**
-1. Make sure virtual environment is created: `python -m venv venv`
-2. In Windows use: `venv\Scripts\activate`
-3. Check that Python is installed correctly
+### Проблема: "Ошибка активации виртуального окружения"
+**Решение:**
+1. Убедитесь, что виртуальное окружение создано: `python -m venv venv`
+2. В Windows используйте: `venv\Scripts\activate`
+3. Проверьте, что Python установлен правильно
 
-### Problem: "OpenAI API error" or "Invalid API key"
-**Solution:**
-1. Check API key in `.env` file
-2. Make sure the key is active on OpenAI website
-3. Check your OpenAI account balance
-4. Ensure internet connection is available
+### Проблема: "OpenAI API ошибка" или "Неверный API ключ"
+**Решение:**
+1. Проверьте API ключ в файле `.env`
+2. Убедитесь, что ключ активен на сайте OpenAI
+3. Проверьте баланс аккаунта OpenAI
+4. Убедитесь в наличии интернета
 
-### Problem: "Module not found" when running
-**Solution:**
-1. Activate virtual environment
-2. Install dependencies: `pip install -r requirements.txt`
-3. If problem persists: `pip install --upgrade -r requirements.txt`
+### Проблема: "Модуль не найден" при запуске
+**Решение:**
+1. Активируйте виртуальное окружение
+2. Установите зависимости: `pip install -r requirements.txt`
+3. Если проблема persists: `pip install --upgrade -r requirements.txt`
 
-### Problem: Hotkeys don't work
-**Solution:**
-1. Run the program as administrator
-2. Check that other programs aren't intercepting Alt+S
-3. Try different key combinations in the code
+### Проблема: Горячие клавиши не работают
+**Решение:**
+1. Запустите программу от имени администратора
+2. Проверьте, что другие программы не перехватывают Alt+S
+3. Попробуйте другие комбинации клавиш в коде
 
-### Problem: Text not copied to clipboard
-**Solution:**
-1. Check that `pyperclip` is installed
-2. Try running as administrator
-3. On Linux/Mac may require additional setup
+### Проблема: Текст не копируется в буфер обмена
+**Решение:**
+1. Проверьте, что установлен `pyperclip`
+2. Попробуйте запустить от имени администратора
+3. На Linux/Mac может потребоваться дополнительная настройка
 
-### Problem: "ffmpeg not found" or audio conversion error
-**Solution:**
-1. Make sure ffmpeg is installed and added to PATH
-2. Test installation with: `ffmpeg -version`
-3. Restart command prompt after adding ffmpeg to PATH
-4. Download latest ffmpeg from official website
+### Проблема: "ffmpeg not found" или ошибка конвертации аудио
+**Решение:**
+1. Убедитесь, что ffmpeg установлен и добавлен в PATH
+2. Проверьте установку командой: `ffmpeg -version`
+3. Перезапустите командную строку после добавления ffmpeg в PATH
+4. Скачайте свежую версию ffmpeg с официального сайта
 
-## Limitations
+## Ограничения
 
-The project was originally created for convenient work in Cursor — short voice messages for fast transcription.
+Проект изначально создан для удобной работы в курсоре — короткие голосовые сообщения для быстрой транскрибации.
 
-### Microphone Recording Mode
-- Maximum recording length: ~12-13 minutes (API limit ~25 MB)
-- Recommended length: 1-5 minutes for optimal speed
-- Recording format: WAV (16 kHz, 16-bit, mono)
+### Режим записи с микрофона
+- Максимальная длина записи: ~12-13 минут (ограничение API ~25 МБ)
+- Рекомендуемая длина: 1-5 минут для оптимальной скорости
+- Формат записи: WAV (16 kHz, 16-bit, моно)
 
-### File Transcription Mode
-- Automatic chunking of long files: files longer than 15 minutes are automatically split into safe segments
-- Maximum segment length: 15 minutes (safe limit for OpenAI API)
-- Supported formats: wav, mp3, m4a, ogg, flac, webm (via ffmpeg)
-- Result: all segments are combined into one .txt file with segment headers
+### Режим транскрибации файлов
+- Автоматическая нарезка длинных файлов: файлы длиннее 15 минут автоматически режутся на безопасные сегменты
+- Максимальная длина одного сегмента: 15 минут (безопасный лимит для OpenAI API)
+- Поддерживаемые форматы: wav, mp3, m4a, ogg, flac, webm (через ffmpeg)
+- Результат: все сегменты склеиваются в один .txt файл (в batch-режиме заголовки сегментов удаляются)
 
-### General Requirements
-- Requires active internet connection for transcription
+### Общие требования
+- Требуется активное подключение к интернету для транскрибации
 
-## Dependencies
+## Зависимости
 
-- `openai` - API for transcription
-- `sounddevice` - microphone recording
-- `soundfile` - audio file handling
-- `numpy` - audio data processing
-- `pyperclip` - clipboard copying
-- `keyboard` - hotkey detection
-- `python-dotenv` - environment variable loading
+- `openai` - API для транскрибации
+- `sounddevice` - запись с микрофона
+- `soundfile` - работа с аудио-файлами
+- `numpy` - обработка аудио-данных
+- `pyperclip` - копирование в буфер обмена
+- `keyboard` - отслеживание горячих клавиш
+- `python-dotenv` - загрузка переменных окружения
 
-## Updating the Project
+## Обновление проекта
 
-### Updating Dependencies
+### Обновление зависимостей
 ```bash
-# Activate virtual environment
+# Активируйте виртуальное окружение
 venv\Scripts\activate
 
-# Upgrade pip
+# Обновите pip
 pip install --upgrade pip
 
-# Upgrade all dependencies
+# Обновите все зависимости
 pip install --upgrade -r requirements.txt
 ```
 
-### Getting Latest Changes (if project is on GitHub)
+### Получение последних изменений (если проект на GitHub)
 ```bash
 git pull origin main
 ```
 
-### Upgrading Python
-If you want to use a newer Python version:
-1. Download new Python from the official website
-2. Create a new virtual environment
-3. Reinstall dependencies
+### Обновление Python
+Если вы хотите использовать более новую версию Python:
+1. Скачайте новый Python с официального сайта
+2. Создайте новое виртуальное окружение
+3. Установите зависимости заново
 
-## License
+## Лицензия
 
-This project is licensed under the MIT License. 
+Этот проект распространяется под лицензией MIT. 
