@@ -12,7 +12,8 @@
 """
 
 import asyncio
-from typing import List
+import os
+from datetime import datetime
 
 from tkinter import Tk, filedialog, messagebox
 
@@ -47,7 +48,25 @@ def choose_audio_files() -> list[str]:
     return list(filepaths)
 
 
-def transcribe_files_sequential(filepaths: List[str]) -> None:
+def remove_segment_headers(text: str) -> str:
+    """
+    Убирает строки вида "[Сегмент 1/1 (0.0–15.7 сек)]" из текста.
+    Это нужно, чтобы в массовом режиме эти служебные заголовки не попадали
+    ни в отдельные файлы, ни в общий итоговый файл.
+    """
+    lines = text.splitlines()
+    cleaned_lines: list[str] = []
+    for line in lines:
+        # Простая эвристика: заголовки сегментов всегда начинаются с "[Сегмент"
+        if line.startswith("[Сегмент") and line.endswith("]"):
+            continue
+        cleaned_lines.append(line)
+
+    # Убираем ведущие и хвостовые пустые строки
+    return "\n".join(cleaned_lines).strip()
+
+
+def transcribe_files_sequential(filepaths: list[str]) -> None:
     """
     Последовательно транскрибирует каждый файл в списке.
 
@@ -59,6 +78,7 @@ def transcribe_files_sequential(filepaths: List[str]) -> None:
     total = len(filepaths)
     success_count = 0
     error_count = 0
+    combined_entries: list[tuple[str, str]] = []
 
     for idx, filepath in enumerate(filepaths, start=1):
         print(f"\n=== Файл {idx}/{total} ===")
@@ -66,13 +86,18 @@ def transcribe_files_sequential(filepaths: List[str]) -> None:
         logger.info(f"[batch] Начинаю транскрибацию файла {idx}/{total}: {filepath}")
 
         try:
-            text = asyncio.run(transcribe_file_async(filepath))
+            raw_text = asyncio.run(transcribe_file_async(filepath))
+            # Для массового режима убираем заголовки сегментов
+            text = remove_segment_headers(raw_text)
         except Exception as e:  # noqa: BLE001 — здесь хотим поймать любую ошибку
             error_count += 1
             logger.error(f"[batch] Ошибка при транскрибации файла {filepath}: {e}")
             print(f"Ошибка при транскрибации этого файла: {e}")
             # Переходим к следующему файлу
             continue
+
+        # Сохраняем в список для формирования общего файла
+        combined_entries.append((filepath, text))
 
         # Печатаем часть результата в консоль (полный текст — в .txt-файле)
         print("Распознанный текст (начало):")
@@ -88,12 +113,39 @@ def transcribe_files_sequential(filepaths: List[str]) -> None:
         success_count += 1
         print(f"Транскрипция сохранена в файл:\n{txt_path}")
 
+    # Формируем общий файл, если есть хотя бы один успешно распознанный файл
+    combined_path: str | None = None
+    if combined_entries:
+        first_dir = os.path.dirname(combined_entries[0][0]) or "."
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        combined_name = f"batch_transcription_{timestamp}.txt"
+        combined_path = os.path.join(first_dir, combined_name)
+
+        with open(combined_path, "w", encoding="utf-8") as f:
+            for idx, (file_path, text) in enumerate(combined_entries):
+                base_name = os.path.basename(file_path)
+                # Формат блока:
+                # название файла
+                # текст транскрибации
+                # пустая строка
+                f.write(base_name + "\n\n")
+                f.write(text.strip() + "\n")
+
+                # Пустая строка между блоками, кроме, возможно, самого последнего —
+                # это не критично, но так приятнее читать.
+                if idx != len(combined_entries) - 1:
+                    f.write("\n")
+
     # Итоговая сводка
-    summary = (
-        f"Обработано файлов: {total}\n"
-        f"Успешно: {success_count}\n"
-        f"С ошибками: {error_count}"
-    )
+    summary_lines = [
+        f"Обработано файлов: {total}",
+        f"Успешно: {success_count}",
+        f"С ошибками: {error_count}",
+    ]
+    if combined_path is not None:
+        summary_lines.append(f"Общий файл со всеми транскрипциями:\n{combined_path}")
+
+    summary = "\n".join(summary_lines)
 
     print("\n=== Массовая транскрибация завершена ===")
     print(summary)
