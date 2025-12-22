@@ -49,10 +49,24 @@
    ```
 
 6. Установите ffmpeg (требуется для обработки аудио-файлов):
-   - Скачайте с официального сайта: https://ffmpeg.org/download.html
-   - Выберите версию для Windows
-   - Распакуйте архив (например, в `C:\ffmpeg`)
-   - Добавьте путь `C:\ffmpeg\bin` в переменную окружения PATH
+
+   **Для Windows:**
+   1. Откройте браузер и перейдите на https://ffmpeg.org/download.html
+   2. Найдите раздел "Windows builds" и скачайте версию "ffmpeg-release-essentials.zip" (рекомендуется Gyan's builds)
+   3. Создайте папку `C:\ffmpeg` (или любую другую удобную папку)
+   4. Распакуйте скачанный архив в созданную папку
+   5. Найдите папку `bin` внутри распакованного архива (обычно путь будет типа `C:\ffmpeg\ffmpeg-*-essentials_build\bin`)
+   6. Скопируйте содержимое этой папки `bin` в `C:\ffmpeg\bin` (или переименуйте папку, если нужно)
+   7. Откройте PowerShell **от имени администратора** (правой кнопкой мыши → "Запуск от имени администратора")
+   8. Выполните команду для добавления пути в переменную окружения PATH:
+      ```powershell
+      $path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+      [Environment]::SetEnvironmentVariable("Path", "$path;C:\ffmpeg\bin", "Machine")
+      ```
+   9. Перезапустите PowerShell и проверьте установку:
+      ```bash
+      ffmpeg -version
+      ```
 
 7. Настройте `.env` файл:
    ```bash
